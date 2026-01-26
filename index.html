@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veste Bem - Esportes Cariocas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-app">
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">⚽</span>
+                <span>Veste Bem</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon" onclick="openCart()">
+                    🛒
+                    <div class="cart-badge" id="cartBadgeHeader">0</div>
+                </button>
+            </div>
+        </header>
+
+        <div class="promo-banner">
+            ⚡ OFERTAÇO: Aproveita enquanto tiver!
+        </div>
+
+        <div class="search-section">
+            <div class="search-input-group">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="Busca rápida... 🔍"
+                    autocomplete="off"
+                >
+                <button class="btn-search" onclick="searchProducts()">Buscar</button>
+            </div>
+        </div>
+
+        <div class="carousel-promo">
+            <div class="carousel-slides" id="carouselSlides">
+                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=400&fit=crop');">
+                    <div class="carousel-text">⚽ Futebol em Promoção</div>
+                </div>
+                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=400&fit=crop');">
+                    <div class="carousel-text">🏖️ Praia & Futevôlei</div>
+                </div>
+                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=400&fit=crop');">
+                    <div class="carousel-text">💪 Academia & Corrida</div>
+                </div>
+            </div>
+            <div class="carousel-nav" id="carouselNav"></div>
+        </div>
+
+        <div class="filters-section" id="filtersSection">
+            <button class="filter-btn active" onclick="filterCategory('todos')">Todos</button>
+            <button class="filter-btn" onclick="filterCategory('futebol')">⚽ Futebol</button>
+            <button class="filter-btn" onclick="filterCategory('praia')">🏖️ Praia</button>
+            <button class="filter-btn" onclick="filterCategory('academia')">💪 Academia</button>
+            <button class="filter-btn" onclick="filterCategory('acessorios')">🎒 Acessórios</button>
+        </div>
+
+        <div class="main-layout">
+            
+            <aside class="sidebar">
+                
+                <div class="sidebar-widget">
+                    <div class="sidebar-title">
+                        <span>💰 Preço</span>
+                    </div>
+                    <div class="price-inputs">
+                        <input type="number" id="minPrice" class="input-price" placeholder="R$ Min" onchange="applyFilters()">
+                        <span>-</span>
+                        <input type="number" id="maxPrice" class="input-price" placeholder="R$ Max" onchange="applyFilters()">
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <div class="sidebar-title">
+                        <span>🏷️ Destaques</span>
+                    </div>
+                    <div class="filter-checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Mais vendido" onchange="toggleTagFilter(this)">
+                            Mais Vendidos
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Novo" onchange="toggleTagFilter(this)">
+                            Novidades
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="Top vendido" onchange="toggleTagFilter(this)">
+                            Top da Semana
+                        </label>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <div class="sidebar-title">
+                        <span>🔥 Ofertas</span>
+                    </div>
+                    <div class="filter-checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="OFERTA" onchange="toggleBadgeFilter(this)">
+                            Em Oferta
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="PROMO" onchange="toggleBadgeFilter(this)">
+                            Promoção
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="QUEIMA" onchange="toggleBadgeFilter(this)">
+                            Queima de Estoque
+                        </label>
+                    </div>
+                </div>
+
+            </aside>
+
+            <div class="products-section">
+                <div class="section-title">
+                    <span class="section-title-icon">🔥</span>
+                    Produtos
+                </div>
+                <div class="products-grid" id="productsGrid"></div>
+                <div class="pagination-container" id="paginationControls"></div>
+                
+                <div id="noResults" class="no-results" style="display: none;">
+                    <div class="no-results-icon">🔍</div>
+                    <p>Nenhum produto encontrado com esses filtros</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-contact">
+                <div class="footer-phone">📞 (21) 99999-0000</div>
+                <a href="https://wa.me/5521999990000" class="btn-footer-whatsapp">
+                    💬 Fale Conosco
+                </a>
+            </div>
+            <div class="footer-info">
+                <p>Loja de esportes do seu bairro 🏪</p>
+                <p style="margin-top: 12px; font-size: 10px;">Avenida Principal, 123 - Rio de Janeiro</p>
+            </div>
+        </footer>
+    </div>
+
+    <div id="cartModal" class="modal" onclick="closeCart(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Seu Pedido</h2>
+                <button class="btn-close-modal" onclick="closeCart()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="cartItems"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeCart()">Continuar Comprando</button>
+                <button class="btn-whatsapp" onclick="sendViaWhatsApp()">
+                    <span>💬</span>
+                    Finalizar no Zap
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="dados.js"></script>
+</body>
+</html>
