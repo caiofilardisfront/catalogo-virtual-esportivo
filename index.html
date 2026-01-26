@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container-app">
         <header class="header">
             <div class="logo">
-                <span class="logo-icon">⚽</span>
-                <span>Veste Bem</span>
+                <img class="logo-icon" src="assets/img/Logo(150x50).png" alt="Logo Veste Bem">
             </div>
             <div class="header-actions">
                 <button class="btn-icon" onclick="openCart()">
@@ -28,26 +29,24 @@
 
         <div class="search-section">
             <div class="search-input-group">
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    id="searchInput" 
-                    placeholder="Busca rápida... 🔍"
-                    autocomplete="off"
-                >
+                <input type="text" class="search-input" id="searchInput" placeholder="Busca rápida... 🔍"
+                    autocomplete="off">
                 <button class="btn-search" onclick="searchProducts()">Buscar</button>
             </div>
         </div>
 
         <div class="carousel-promo">
             <div class="carousel-slides" id="carouselSlides">
-                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=400&fit=crop');">
+                <div class="carousel-slide"
+                    style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=400&fit=crop');">
                     <div class="carousel-text">⚽ Futebol em Promoção</div>
                 </div>
-                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=400&fit=crop');">
+                <div class="carousel-slide"
+                    style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=400&fit=crop');">
                     <div class="carousel-text">🏖️ Praia & Futevôlei</div>
                 </div>
-                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=400&fit=crop');">
+                <div class="carousel-slide"
+                    style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=400&fit=crop');">
                     <div class="carousel-text">💪 Academia & Corrida</div>
                 </div>
             </div>
@@ -63,17 +62,19 @@
         </div>
 
         <div class="main-layout">
-            
+
             <aside class="sidebar">
-                
+
                 <div class="sidebar-widget">
                     <div class="sidebar-title">
                         <span>💰 Preço</span>
                     </div>
                     <div class="price-inputs">
-                        <input type="number" id="minPrice" class="input-price" placeholder="R$ Min" onchange="applyFilters()">
+                        <input type="number" id="minPrice" class="input-price" placeholder="R$ Min"
+                            onchange="applyFilters()">
                         <span>-</span>
-                        <input type="number" id="maxPrice" class="input-price" placeholder="R$ Max" onchange="applyFilters()">
+                        <input type="number" id="maxPrice" class="input-price" placeholder="R$ Max"
+                            onchange="applyFilters()">
                     </div>
                 </div>
 
@@ -126,7 +127,7 @@
                 </div>
                 <div class="products-grid" id="productsGrid"></div>
                 <div class="pagination-container" id="paginationControls"></div>
-                
+
                 <div id="noResults" class="no-results" style="display: none;">
                     <div class="no-results-icon">🔍</div>
                     <p>Nenhum produto encontrado com esses filtros</p>
@@ -169,4 +170,5 @@
 
     <script src="dados.js"></script>
 </body>
+
 </html>

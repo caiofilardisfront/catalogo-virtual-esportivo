@@ -25,8 +25,8 @@ const baseProducts = [
 // Adicionamos IDs únicos para não quebrar o carrinho
 const products = [
     ...baseProducts,
-    ...baseProducts.map(p => ({...p, id: p.id + 100, name: p.name + ' II'})),
-    ...baseProducts.map(p => ({...p, id: p.id + 200, name: p.name + ' III'}))
+    ...baseProducts.map(p => ({ ...p, id: p.id + 100, name: p.name + ' II' })),
+    ...baseProducts.map(p => ({ ...p, id: p.id + 200, name: p.name + ' III' }))
 ];
 
 // ==========================================
@@ -190,19 +190,19 @@ function renderPaginationControls(totalItems) {
 
 function changePage(newPage) {
     currentPage = newPage;
-    
+
     // Força re-renderização mantendo os filtros atuais
     // Mas NÃO chamamos applyFilters() direto para não resetar a página para 1
     // Precisamos de uma função auxiliar para filtrar sem resetar, 
     // ou apenas chamamos applyFilters passando um flag.
     // Solução mais simples: chamar applyFilters, mas alterar a lógica dele abaixo.
-    
+
     // Neste caso, vamos apenas pegar a lista filtrada atual e renderizar
     // Para simplificar, vamos chamar applyFilters mas vamos criar uma variável global
     // "isChangingPage" ou passar parametro.
-    
+
     applyFilters(false); // Passamos false para NÃO resetar a página
-    
+
     // Scroll suave para o topo da lista
     document.querySelector('.products-section').scrollIntoView({ behavior: 'smooth' });
 }
@@ -215,8 +215,8 @@ function filterCategory(category) {
     currentFilter = category;
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
     const buttons = document.querySelectorAll('.filter-btn');
-    for(let btn of buttons) {
-        if(btn.textContent.toLowerCase().includes(category) || (category === 'todos' && btn.textContent === 'Todos')) {
+    for (let btn of buttons) {
+        if (btn.textContent.toLowerCase().includes(category) || (category === 'todos' && btn.textContent === 'Todos')) {
             btn.classList.add('active');
         }
     }
@@ -245,7 +245,7 @@ function toggleBadgeFilter(checkbox) {
 
 function searchProducts() {
     const searchInput = document.getElementById('searchInput');
-    if(searchInput) {
+    if (searchInput) {
         currentSearch = searchInput.value.toLowerCase();
         applyFilters(true); // Resetar para página 1
     }
@@ -253,7 +253,7 @@ function searchProducts() {
 
 // Função Principal de Filtro
 function applyFilters(shouldResetPage = false) {
-    
+
     // Se for uma nova busca/filtro, volta para página 1
     if (shouldResetPage) {
         currentPage = 1;
@@ -262,7 +262,7 @@ function applyFilters(shouldResetPage = false) {
     // Pegar valores dos inputs de preço
     const minInputEl = document.getElementById('minPrice');
     const maxInputEl = document.getElementById('maxPrice');
-    
+
     if (minInputEl) priceMin = minInputEl.value ? parseFloat(minInputEl.value) : null;
     if (maxInputEl) priceMax = maxInputEl.value ? parseFloat(maxInputEl.value) : null;
 
@@ -275,7 +275,7 @@ function applyFilters(shouldResetPage = false) {
 
     // 2. Busca
     if (currentSearch) {
-        filtered = filtered.filter(p => 
+        filtered = filtered.filter(p =>
             p.name.toLowerCase().includes(currentSearch)
         );
     }
@@ -319,7 +319,7 @@ function addToCart(productId) {
 function updateCartBadge() {
     const total = cart.reduce((sum, item) => sum + item.quantity, 0);
     const badge = document.getElementById('cartBadgeHeader');
-    if(badge) badge.textContent = total;
+    if (badge) badge.textContent = total;
 }
 
 function openCart() {
@@ -374,7 +374,7 @@ function openCart() {
 function closeCart(event) {
     if (event && event.target.id !== 'cartModal') return;
     const modal = document.getElementById('cartModal');
-    if(modal) modal.style.display = 'none';
+    if (modal) modal.style.display = 'none';
 }
 
 function updateQty(productId, delta) {
@@ -412,7 +412,7 @@ function sendViaWhatsApp() {
 
 // Event Listeners
 const searchInput = document.getElementById('searchInput');
-if(searchInput) {
+if (searchInput) {
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') searchProducts();
     });
