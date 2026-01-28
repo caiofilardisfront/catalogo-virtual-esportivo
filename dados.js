@@ -25,8 +25,6 @@ const baseProducts = [
 // Adicionamos IDs únicos para não quebrar o carrinho
 const products = [
     ...baseProducts,
-    ...baseProducts.map(p => ({ ...p, id: p.id + 100, name: p.name + ' II' })),
-    ...baseProducts.map(p => ({ ...p, id: p.id + 200, name: p.name + ' III' }))
 ];
 
 // ==========================================
@@ -190,16 +188,6 @@ function renderPaginationControls(totalItems) {
 
 function changePage(newPage) {
     currentPage = newPage;
-
-    // Força re-renderização mantendo os filtros atuais
-    // Mas NÃO chamamos applyFilters() direto para não resetar a página para 1
-    // Precisamos de uma função auxiliar para filtrar sem resetar, 
-    // ou apenas chamamos applyFilters passando um flag.
-    // Solução mais simples: chamar applyFilters, mas alterar a lógica dele abaixo.
-
-    // Neste caso, vamos apenas pegar a lista filtrada atual e renderizar
-    // Para simplificar, vamos chamar applyFilters mas vamos criar uma variável global
-    // "isChangingPage" ou passar parametro.
 
     applyFilters(false); // Passamos false para NÃO resetar a página
 
@@ -425,7 +413,7 @@ function addToCart(productId) {
         cart.push({ ...product, quantity: 1 });
     }
     updateCartBadge();
-    
+
     // Feedback visual opcional
     const btn = event.target;
     const originalText = btn.innerText;
@@ -441,24 +429,24 @@ function updateCartBadge() {
     const total = cart.reduce((sum, item) => sum + item.quantity, 0);
     // Atualiza badge do Header
     const badgeHeader = document.getElementById('cartBadgeHeader');
-    if(badgeHeader) badgeHeader.textContent = total;
-    
+    if (badgeHeader) badgeHeader.textContent = total;
+
     // Atualiza badge Flutuante
     const badgeFloating = document.getElementById('cartBadgeFloating');
-    if(badgeFloating) badgeFloating.textContent = total;
+    if (badgeFloating) badgeFloating.textContent = total;
 }
 
 function openCart() {
     const modal = document.getElementById('cartModal');
     currentCheckoutStep = 1; // Sempre abre na etapa 1
     renderStep();
-    if(modal) modal.style.display = 'block';
+    if (modal) modal.style.display = 'block';
 }
 
 function closeCart(event) {
     if (event && event.target.id !== 'cartModal') return;
     const modal = document.getElementById('cartModal');
-    if(modal) modal.style.display = 'none';
+    if (modal) modal.style.display = 'none';
 }
 
 function updateQty(productId, delta) {
@@ -536,7 +524,7 @@ function renderCartStep() {
                 </div>
             `;
         });
-        
+
         // Total da Fase 1
         html += `
             <div class="cart-summary">
@@ -546,9 +534,9 @@ function renderCartStep() {
                 </div>
             </div>
         `;
-        
+
         itemsDiv.innerHTML = html;
-        
+
         // Botões da Fase 1
         footer.innerHTML = `
             <button class="btn-secondary" onclick="closeCart()">Voltar</button>
@@ -591,7 +579,7 @@ function renderSummaryStep() {
     const num = document.getElementById('clientNumber').value;
     const bairro = document.getElementById('clientNeighborhood').value;
     const cidade = document.getElementById('clientCity').value;
-    
+
     addressText.innerHTML = `
         <b>Cliente:</b> ${name}<br>
         <b>Endereço:</b> ${rua}, ${num}<br>
@@ -625,7 +613,7 @@ function validateAndGoToStep3() {
         alert("Por favor, preencha todos os campos obrigatórios (*).");
         return;
     }
-    
+
     goToStep(3);
 }
 
@@ -638,7 +626,7 @@ function checkCep(cepValue) {
         // Expressão regular para validar o CEP.
         const validacep = /^[0-9]{8}$/;
 
-        if(validacep.test(cep)) {
+        if (validacep.test(cep)) {
             // Preenche os campos com "..." enquanto consulta webservice.
             document.getElementById('clientStreet').value = "...";
             document.getElementById('clientNeighborhood').value = "...";
@@ -646,7 +634,7 @@ function checkCep(cepValue) {
 
             // Cria um script para buscar
             const script = document.createElement('script');
-            script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=fillAddress';
+            script.src = 'https://viacep.com.br/ws/' + cep + '/json/?callback=fillAddress';
             document.body.appendChild(script);
         } else {
             alert("Formato de CEP inválido.");
@@ -669,10 +657,10 @@ function fillAddress(content) {
 
 // === MÁSCARAS DE INPUT ===
 function maskPhone(input) {
-    let value = input.value.replace(/\D/g,'');
+    let value = input.value.replace(/\D/g, '');
     // (11) 99999-9999
-    value = value.replace(/^(\d{2})(\d)/g,"($1) $2");
-    value = value.replace(/(\d)(\d{4})$/,"$1-$2");
+    value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
+    value = value.replace(/(\d)(\d{4})$/, "$1-$2");
     input.value = value.substring(0, 15); // Limita tamanho
 }
 
@@ -691,7 +679,7 @@ function finalizeOrder() {
     message += `----------------------------------\n`;
     message += `👤 *Cliente:* ${name}\n`;
     message += `📞 *Tel:* ${phone}\n`;
-    if(email) message += `✉️ *Email:* ${email}\n`;
+    if (email) message += `✉️ *Email:* ${email}\n`;
     message += `\n📍 *Endereço de Entrega:*\n`;
     message += `${rua}, ${num}\n${bairro} - ${cidade}\n`;
     message += `----------------------------------\n`;
@@ -714,7 +702,7 @@ function finalizeOrder() {
 
 // ... (EVENT LISTENERS e INIT MANTIDOS DO CÓDIGO ANTERIOR) ...
 const searchInput = document.getElementById('searchInput');
-if(searchInput) {
+if (searchInput) {
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') searchProducts();
     });
