@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +7,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <div class="container-app">
         <header class="header">
             <div class="logo">
-                <img class="logo-icon" src="assets/img/Logo(150x50).png" alt="Logo Veste Bem">
+                <span class="logo-icon">⚽</span>
+                <span>Veste Bem</span>
             </div>
             <div class="header-actions">
                 <button class="btn-icon" onclick="openCart()">
@@ -29,24 +28,20 @@
 
         <div class="search-section">
             <div class="search-input-group">
-                <input type="text" class="search-input" id="searchInput" placeholder="Busca rápida... 🔍"
-                    autocomplete="off">
+                <input type="text" class="search-input" id="searchInput" placeholder="Busca rápida... 🔍" autocomplete="off">
                 <button class="btn-search" onclick="searchProducts()">Buscar</button>
             </div>
         </div>
 
         <div class="carousel-promo">
             <div class="carousel-slides" id="carouselSlides">
-                <div class="carousel-slide"
-                    style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=400&fit=crop');">
+                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=400&fit=crop');">
                     <div class="carousel-text">⚽ Futebol em Promoção</div>
                 </div>
-                <div class="carousel-slide"
-                    style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=400&fit=crop');">
+                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=400&fit=crop');">
                     <div class="carousel-text">🏖️ Praia & Futevôlei</div>
                 </div>
-                <div class="carousel-slide"
-                    style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=400&fit=crop');">
+                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=400&fit=crop');">
                     <div class="carousel-text">💪 Academia & Corrida</div>
                 </div>
             </div>
@@ -62,72 +57,39 @@
         </div>
 
         <div class="main-layout">
-
             <aside class="sidebar">
-
                 <div class="sidebar-widget">
-                    <div class="sidebar-title">
-                        <span>💰 Preço</span>
-                    </div>
+                    <div class="sidebar-title"><span>💰 Preço</span></div>
                     <div class="price-inputs">
-                        <input type="number" id="minPrice" class="input-price" placeholder="R$ Min"
-                            onchange="applyFilters()">
+                        <input type="number" id="minPrice" class="input-price" placeholder="R$ Min" onchange="applyFilters()">
                         <span>-</span>
-                        <input type="number" id="maxPrice" class="input-price" placeholder="R$ Max"
-                            onchange="applyFilters()">
+                        <input type="number" id="maxPrice" class="input-price" placeholder="R$ Max" onchange="applyFilters()">
                     </div>
                 </div>
-
                 <div class="sidebar-widget">
-                    <div class="sidebar-title">
-                        <span>🏷️ Destaques</span>
-                    </div>
+                    <div class="sidebar-title"><span>🏷️ Destaques</span></div>
                     <div class="filter-checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="Mais vendido" onchange="toggleTagFilter(this)">
-                            Mais Vendidos
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="Novo" onchange="toggleTagFilter(this)">
-                            Novidades
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="Top vendido" onchange="toggleTagFilter(this)">
-                            Top da Semana
-                        </label>
+                        <label class="checkbox-label"><input type="checkbox" value="Mais vendido" onchange="toggleTagFilter(this)"> Mais Vendidos</label>
+                        <label class="checkbox-label"><input type="checkbox" value="Novo" onchange="toggleTagFilter(this)"> Novidades</label>
+                        <label class="checkbox-label"><input type="checkbox" value="Top vendido" onchange="toggleTagFilter(this)"> Top da Semana</label>
                     </div>
                 </div>
-
                 <div class="sidebar-widget">
-                    <div class="sidebar-title">
-                        <span>🔥 Ofertas</span>
-                    </div>
+                    <div class="sidebar-title"><span>🔥 Ofertas</span></div>
                     <div class="filter-checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="OFERTA" onchange="toggleBadgeFilter(this)">
-                            Em Oferta
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="PROMO" onchange="toggleBadgeFilter(this)">
-                            Promoção
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="QUEIMA" onchange="toggleBadgeFilter(this)">
-                            Queima de Estoque
-                        </label>
+                        <label class="checkbox-label"><input type="checkbox" value="OFERTA" onchange="toggleBadgeFilter(this)"> Em Oferta</label>
+                        <label class="checkbox-label"><input type="checkbox" value="PROMO" onchange="toggleBadgeFilter(this)"> Promoção</label>
+                        <label class="checkbox-label"><input type="checkbox" value="QUEIMA" onchange="toggleBadgeFilter(this)"> Queima de Estoque</label>
                     </div>
                 </div>
-
             </aside>
 
             <div class="products-section">
                 <div class="section-title">
-                    <span class="section-title-icon">🔥</span>
-                    Produtos
+                    <span class="section-title-icon">🔥</span> Produtos
                 </div>
                 <div class="products-grid" id="productsGrid"></div>
                 <div class="pagination-container" id="paginationControls"></div>
-
                 <div id="noResults" class="no-results" style="display: none;">
                     <div class="no-results-icon">🔍</div>
                     <p>Nenhum produto encontrado com esses filtros</p>
@@ -138,9 +100,7 @@
         <footer class="footer">
             <div class="footer-contact">
                 <div class="footer-phone">📞 (21) 99999-0000</div>
-                <a href="https://wa.me/5521999990000" class="btn-footer-whatsapp">
-                    💬 Fale Conosco
-                </a>
+                <a href="#" class="btn-footer-whatsapp">💬 Fale Conosco</a>
             </div>
             <div class="footer-info">
                 <p>Loja de esportes do seu bairro 🏪</p>
@@ -149,26 +109,97 @@
         </footer>
     </div>
 
+    <div class="floating-cart-btn" onclick="openCart()">
+        <i class="bi bi-cart-fill"></i>
+        <span class="floating-badge" id="cartBadgeFloating">0</span>
+    </div>
+
     <div id="cartModal" class="modal" onclick="closeCart(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
+            
             <div class="modal-header">
-                <h2>Seu Pedido</h2>
+                <h2 id="modalTitle">Seu Carrinho</h2>
                 <button class="btn-close-modal" onclick="closeCart()">✕</button>
             </div>
+
             <div class="modal-body">
-                <div id="cartItems"></div>
+                
+                <div id="step1" class="checkout-step">
+                    <div id="cartItems"></div>
+                </div>
+
+                <div id="step2" class="checkout-step" style="display: none;">
+                    <form id="addressForm" class="address-form">
+                        <div class="form-group">
+                            <label>Seu Nome *</label>
+                            <input type="text" id="clientName" class="form-input" placeholder="Ex: João Silva">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>WhatsApp *</label>
+                                <input type="tel" id="clientPhone" class="form-input" placeholder="(21) 99999-9999" onkeyup="maskPhone(this)">
+                            </div>
+                            <div class="form-group">
+                                <label>E-mail</label>
+                                <input type="email" id="clientEmail" class="form-input" placeholder="joao@email.com">
+                            </div>
+                        </div>
+                        <hr class="form-divider">
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 1;">
+                                <label>CEP *</label>
+                                <input type="text" id="clientCep" class="form-input" placeholder="00000-000" onblur="checkCep(this.value)" maxlength="9">
+                            </div>
+                            <div class="form-group" style="flex: 0 0 100px; display: flex; align-items: flex-end;">
+                                <a href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank" style="font-size: 11px; margin-bottom: 12px; color: var(--secondary);">Não sei meu CEP</a>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 2;">
+                                <label>Rua</label>
+                                <input type="text" id="clientStreet" class="form-input" disabled>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Número *</label>
+                                <input type="text" id="clientNumber" class="form-input" placeholder="123">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Bairro</label>
+                                <input type="text" id="clientNeighborhood" class="form-input" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Cidade/UF</label>
+                                <input type="text" id="clientCity" class="form-input" disabled>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="step3" class="checkout-step" style="display: none;">
+                    <div class="summary-container">
+                        <div class="summary-block">
+                            <h3>📦 Itens</h3>
+                            <div id="summaryItemsList"></div>
+                        </div>
+                        <div class="summary-block">
+                            <h3>📍 Entrega</h3>
+                            <p id="summaryAddressText"></p>
+                        </div>
+                        <div class="summary-total-highlight">
+                            Total a Pagar: <span id="summaryTotalValue">R$ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeCart()">Continuar Comprando</button>
-                <button class="btn-whatsapp" onclick="sendViaWhatsApp()">
-                    <span>💬</span>
-                    Finalizar no Zap
-                </button>
-            </div>
+
+            <div class="modal-footer" id="modalFooter">
+                </div>
         </div>
     </div>
 
     <script src="dados.js"></script>
 </body>
-
 </html>
