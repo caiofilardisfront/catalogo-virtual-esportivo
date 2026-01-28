@@ -410,9 +410,311 @@ function sendViaWhatsApp() {
     window.open(whatsappUrl, '_blank');
 }
 
-// Event Listeners
+// ==========================================
+// 6. CARRINHO & CHECKOUT (Lógica Substituída)
+// ==========================================
+
+let currentCheckoutStep = 1;
+
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    const existing = cart.find(c => c.id === productId);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
+    updateCartBadge();
+    
+    // Feedback visual opcional
+    const btn = event.target;
+    const originalText = btn.innerText;
+    btn.innerText = "Adicionado!";
+    btn.style.background = "var(--success)";
+    setTimeout(() => {
+        btn.innerText = originalText;
+        btn.style.background = "";
+    }, 1000);
+}
+
+function updateCartBadge() {
+    const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+    // Atualiza badge do Header
+    const badgeHeader = document.getElementById('cartBadgeHeader');
+    if(badgeHeader) badgeHeader.textContent = total;
+    
+    // Atualiza badge Flutuante
+    const badgeFloating = document.getElementById('cartBadgeFloating');
+    if(badgeFloating) badgeFloating.textContent = total;
+}
+
+function openCart() {
+    const modal = document.getElementById('cartModal');
+    currentCheckoutStep = 1; // Sempre abre na etapa 1
+    renderStep();
+    if(modal) modal.style.display = 'block';
+}
+
+function closeCart(event) {
+    if (event && event.target.id !== 'cartModal') return;
+    const modal = document.getElementById('cartModal');
+    if(modal) modal.style.display = 'none';
+}
+
+function updateQty(productId, delta) {
+    const item = cart.find(c => c.id === productId);
+    if (item) {
+        item.quantity = Math.max(1, item.quantity + delta);
+        updateCartBadge();
+        renderStep(); // Re-renderiza o passo atual (carrinho)
+    }
+}
+
+function removeFromCart(productId) {
+    cart = cart.filter(c => c.id !== productId);
+    updateCartBadge();
+    renderStep();
+}
+
+// === GERENCIADOR DE ETAPAS ===
+
+function renderStep() {
+    // Esconde todos os passos
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3').style.display = 'none';
+
+    // Mostra o passo atual e atualiza botões
+    if (currentCheckoutStep === 1) {
+        document.getElementById('modalTitle').innerText = "1. Seu Carrinho";
+        document.getElementById('step1').style.display = 'block';
+        renderCartStep();
+    } else if (currentCheckoutStep === 2) {
+        document.getElementById('modalTitle').innerText = "2. Endereço de Entrega";
+        document.getElementById('step2').style.display = 'block';
+        renderAddressControls();
+    } else if (currentCheckoutStep === 3) {
+        document.getElementById('modalTitle').innerText = "3. Confirmar Pedido";
+        document.getElementById('step3').style.display = 'block';
+        renderSummaryStep();
+    }
+}
+
+// --- FASE 1: Lista do Carrinho ---
+function renderCartStep() {
+    const itemsDiv = document.getElementById('cartItems');
+    const footer = document.getElementById('modalFooter');
+
+    if (cart.length === 0) {
+        itemsDiv.innerHTML = `
+            <div class="empty-cart">
+                <div class="empty-cart-icon">🛒</div>
+                <p>Seu carrinho está vazio</p>
+                <p style="font-size: 12px; margin-top: 8px;">Adicione produtos para começar!</p>
+            </div>
+        `;
+        footer.innerHTML = `<button class="btn-secondary" onclick="closeCart()">Continuar Comprando</button>`;
+    } else {
+        let html = '';
+        let total = 0;
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+            html += `
+                <div class="cart-item">
+                    <div class="cart-item-image" style="background-image: url('${item.image}'); background-size: cover;"></div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</div>
+                        <div class="cart-item-qty">
+                            <button class="qty-btn" onclick="updateQty(${item.id}, -1)">−</button>
+                            <span style="width: 20px; text-align: center;">${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                            <button class="btn-remove" onclick="removeFromCart(${item.id})">✕ Remover</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        // Total da Fase 1
+        html += `
+            <div class="cart-summary">
+                <div class="summary-row total">
+                    <span>Subtotal:</span>
+                    <span>R$ ${total.toFixed(2).replace('.', ',')}</span>
+                </div>
+            </div>
+        `;
+        
+        itemsDiv.innerHTML = html;
+        
+        // Botões da Fase 1
+        footer.innerHTML = `
+            <button class="btn-secondary" onclick="closeCart()">Voltar</button>
+            <button class="btn-primary" onclick="goToStep(2)">Continuar para Endereço</button>
+        `;
+    }
+}
+
+// --- FASE 2: Controles ---
+function renderAddressControls() {
+    const footer = document.getElementById('modalFooter');
+    footer.innerHTML = `
+        <button class="btn-secondary" onclick="goToStep(1)">Voltar</button>
+        <button class="btn-primary" onclick="validateAndGoToStep3()">Revisar Pedido</button>
+    `;
+}
+
+// --- FASE 3: Resumo ---
+function renderSummaryStep() {
+    const footer = document.getElementById('modalFooter');
+    const itemsList = document.getElementById('summaryItemsList');
+    const addressText = document.getElementById('summaryAddressText');
+    const totalEl = document.getElementById('summaryTotalValue');
+
+    // Preenche Itens
+    let total = 0;
+    let itemsHtml = '<ul style="list-style: none; padding: 0;">';
+    cart.forEach(item => {
+        const sub = item.price * item.quantity;
+        total += sub;
+        itemsHtml += `<li style="margin-bottom: 4px; font-size: 12px;">• ${item.quantity}x ${item.name} <b>(R$ ${sub.toFixed(2).replace('.', ',')})</b></li>`;
+    });
+    itemsHtml += '</ul>';
+    itemsList.innerHTML = itemsHtml;
+    totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+
+    // Preenche Endereço
+    const name = document.getElementById('clientName').value;
+    const rua = document.getElementById('clientStreet').value;
+    const num = document.getElementById('clientNumber').value;
+    const bairro = document.getElementById('clientNeighborhood').value;
+    const cidade = document.getElementById('clientCity').value;
+    
+    addressText.innerHTML = `
+        <b>Cliente:</b> ${name}<br>
+        <b>Endereço:</b> ${rua}, ${num}<br>
+        ${bairro} - ${cidade}
+    `;
+
+    footer.innerHTML = `
+        <button class="btn-secondary" onclick="goToStep(2)">Corrigir</button>
+        <button class="btn-whatsapp" onclick="finalizeOrder()">
+            <span>💬</span> Enviar Pedido
+        </button>
+    `;
+}
+
+// === LÓGICA DE NAVEGAÇÃO E VALIDAÇÃO ===
+
+function goToStep(step) {
+    currentCheckoutStep = step;
+    renderStep();
+}
+
+function validateAndGoToStep3() {
+    // Validação simples
+    const name = document.getElementById('clientName').value;
+    const phone = document.getElementById('clientPhone').value;
+    const cep = document.getElementById('clientCep').value;
+    const num = document.getElementById('clientNumber').value;
+    const rua = document.getElementById('clientStreet').value;
+
+    if (!name || !phone || !cep || !num || !rua) {
+        alert("Por favor, preencha todos os campos obrigatórios (*).");
+        return;
+    }
+    
+    goToStep(3);
+}
+
+// === INTEGRAÇÃO VIACEP ===
+function checkCep(cepValue) {
+    // Remove tudo que não é digito
+    const cep = cepValue.replace(/\D/g, '');
+
+    if (cep !== "") {
+        // Expressão regular para validar o CEP.
+        const validacep = /^[0-9]{8}$/;
+
+        if(validacep.test(cep)) {
+            // Preenche os campos com "..." enquanto consulta webservice.
+            document.getElementById('clientStreet').value = "...";
+            document.getElementById('clientNeighborhood').value = "...";
+            document.getElementById('clientCity').value = "...";
+
+            // Cria um script para buscar
+            const script = document.createElement('script');
+            script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=fillAddress';
+            document.body.appendChild(script);
+        } else {
+            alert("Formato de CEP inválido.");
+        }
+    }
+}
+
+// Callback do ViaCEP
+function fillAddress(content) {
+    if (!("erro" in content)) {
+        document.getElementById('clientStreet').value = content.logradouro;
+        document.getElementById('clientNeighborhood').value = content.bairro;
+        document.getElementById('clientCity').value = content.localidade + "/" + content.uf;
+        document.getElementById('clientNumber').focus(); // Foca no numero
+    } else {
+        alert("CEP não encontrado.");
+        document.getElementById('clientStreet').value = "";
+    }
+}
+
+// === MÁSCARAS DE INPUT ===
+function maskPhone(input) {
+    let value = input.value.replace(/\D/g,'');
+    // (11) 99999-9999
+    value = value.replace(/^(\d{2})(\d)/g,"($1) $2");
+    value = value.replace(/(\d)(\d{4})$/,"$1-$2");
+    input.value = value.substring(0, 15); // Limita tamanho
+}
+
+// === FINALIZAÇÃO (WHATSAPP) ===
+function finalizeOrder() {
+    // Coleta Dados
+    const name = document.getElementById('clientName').value;
+    const phone = document.getElementById('clientPhone').value;
+    const email = document.getElementById('clientEmail').value;
+    const rua = document.getElementById('clientStreet').value;
+    const num = document.getElementById('clientNumber').value;
+    const bairro = document.getElementById('clientNeighborhood').value;
+    const cidade = document.getElementById('clientCity').value;
+
+    let message = `🛒 *NOVO PEDIDO - VESTE BEM*\n`;
+    message += `----------------------------------\n`;
+    message += `👤 *Cliente:* ${name}\n`;
+    message += `📞 *Tel:* ${phone}\n`;
+    if(email) message += `✉️ *Email:* ${email}\n`;
+    message += `\n📍 *Endereço de Entrega:*\n`;
+    message += `${rua}, ${num}\n${bairro} - ${cidade}\n`;
+    message += `----------------------------------\n`;
+    message += `🛍️ *Itens do Pedido:*\n`;
+
+    let total = 0;
+    cart.forEach(item => {
+        const sub = item.price * item.quantity;
+        total += sub;
+        message += `• ${item.quantity}x ${item.name} - R$ ${sub.toFixed(2).replace('.', ',')}\n`;
+    });
+
+    message += `\n💰 *TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n`;
+    message += `----------------------------------\n`;
+    message += `Aguardo a confirmação para pagamento!`;
+
+    const whatsappUrl = `https://wa.me/5521999990000?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+}
+
+// ... (EVENT LISTENERS e INIT MANTIDOS DO CÓDIGO ANTERIOR) ...
 const searchInput = document.getElementById('searchInput');
-if (searchInput) {
+if(searchInput) {
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') searchProducts();
     });
