@@ -488,7 +488,7 @@ body {
     color: var(--text-dark);
     /* Garante que o nome não quebre o layout */
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    --webkit-line-clamp: 2;
     /* Limita a 2 linhas */
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -839,3 +839,129 @@ body {
     background: var(--bg-light);
 }
 
+/* ===== NOVO: BOTÃO FLUTUANTE ===== */
+.floating-cart-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 15px rgba(232, 35, 13, 0.4);
+    cursor: pointer;
+    z-index: 1500;
+    transition: transform 0.2s;
+}
+
+.floating-cart-btn:hover {
+    transform: scale(1.1);
+}
+
+.floating-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--text-dark);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+}
+
+/* ===== NOVO: FORMULÁRIOS DE CHECKOUT ===== */
+.address-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.form-group label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.form-input {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--bg-light);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+}
+
+.form-input:disabled {
+    background: #e9ecef;
+    cursor: not-allowed;
+}
+
+.form-divider {
+    border: 0;
+    border-top: 1px dashed var(--border);
+    margin: 8px 0;
+}
+
+/* ===== NOVO: RESUMO (STEP 3) ===== */
+.summary-container {
+    background: var(--bg-light);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.summary-block {
+    margin-bottom: 16px;
+}
+
+.summary-block h3 {
+    font-size: 14px;
+    color: var(--primary);
+    margin-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 4px;
+}
+
+.summary-block p, .summary-block li {
+    font-size: 13px;
+    color: var(--text-dark);
+    line-height: 1.4;
+}
+
+.summary-total-highlight {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-dark);
+    padding-top: 12px;
+    border-top: 2px solid var(--border);
+}
